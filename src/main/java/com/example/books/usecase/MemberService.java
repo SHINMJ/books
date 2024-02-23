@@ -31,7 +31,10 @@ public class MemberService {
             throw new AlreadyExistsEmailException();
         }
 
-        Member saved = repository.save(request.toEntity());
+        Member member = request.toEntity();
+        member.changePassword(passwordEncoder.encode(request.password()));
+
+        Member saved = repository.save(member);
         return MemberResponse.of(saved);
     }
 

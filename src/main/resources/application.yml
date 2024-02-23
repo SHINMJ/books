@@ -8,7 +8,7 @@ spring:
     initialization-mode: always
   jpa:
     hibernate:
-      database-platform: org.hibernate.dialect.MySQL8Dialect
+      database-platform: org.hibernate.dialect.MySQL5Dialect
       ddl-auto: create-drop
     defer-datasource-initialization: true
     properties:
@@ -18,3 +18,8 @@ spring:
   h2:
     console:
       enabled: true
+
+
+jwt:
+  token-secret: YXZhdGFydHJpcGF1dGhvcml6YXRpb25qd3RtYW5hZ2VzZWNyZXRrZXkK
+  expired-in: 600000 # 10 min
