@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SignupIntegrationTest extends IntegrationTest{
 
     @Test
-    void signup_success() {
+    void 회원가입_성공() {
         ExtractableResponse<Response> response = SIGNUP( "{ " +
                         "\"email\":\"test@email.com\"," +
                         "\"password\":\"test111\"," +
@@ -29,7 +29,7 @@ public class SignupIntegrationTest extends IntegrationTest{
     }
 
     @Test
-    void signup_failed_notValidPassword() {
+    void 회원가입_실패_비밀번호형식() {
         ExtractableResponse<Response> response = SIGNUP( "{ " +
                 "\"email\":\"test@email.com\"," +
                 "\"password\":\"2223111\"," +
@@ -45,7 +45,7 @@ public class SignupIntegrationTest extends IntegrationTest{
     }
 
     @Test
-    void signup_failed_emptyName() {
+    void 회원가입_실패_이름필수() {
         ExtractableResponse<Response> response = SIGNUP( "{ " +
                 "\"email\":\"test@email.com\"," +
                 "\"password\":\"222df3111\"," +
@@ -60,7 +60,7 @@ public class SignupIntegrationTest extends IntegrationTest{
     }
 
     @Test
-    void signup_failed_notValidEmail() {
+    void 회원가입_실패_이메일형식() {
         ExtractableResponse<Response> response = SIGNUP( "{ " +
                 "\"email\":\"test.com\"," +
                 "\"password\":\"222df3111\"," +
@@ -75,7 +75,7 @@ public class SignupIntegrationTest extends IntegrationTest{
     }
 
     @Test
-    void signup_failed_notValidPhoneNumber() {
+    void 회원가입_실패_휴대폰번호형식() {
         ExtractableResponse<Response> response = SIGNUP( "{ " +
                 "\"email\":\"test@email.com\"," +
                 "\"password\":\"222df3111\"," +
@@ -90,7 +90,7 @@ public class SignupIntegrationTest extends IntegrationTest{
     }
 
     @Test
-    void signup_failed_compositeNotValid() {
+    void 회원가입_실패_이메일_비밀번호_이름_휴대폰번호_notValid() {
         ExtractableResponse<Response> response = SIGNUP( "{ " +
                 "\"email\":\"testom\"," +
                 "\"password\":\"23111\"," +

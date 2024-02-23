@@ -2,8 +2,7 @@ package com.example.books.infra.auth.dto;
 
 import com.example.books.domain.member.Member;
 import com.example.books.infra.auth.userdetails.CustomUserDetails;
-import com.example.books.usecase.dto.LoginUser;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.example.books.usecase.auth.dto.LoginUser;
 
 public class LoginUserDetails extends CustomUserDetails implements LoginUser {
     private final Member member;

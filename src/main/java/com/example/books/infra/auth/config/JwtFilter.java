@@ -19,7 +19,7 @@ import java.util.Arrays;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private static final String[] PERMIT_PATTERNS = {"/auth/signup"};
+    private static final String[] PERMIT_PATTERNS = {"/auth/signup", "/auth/login"};
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 

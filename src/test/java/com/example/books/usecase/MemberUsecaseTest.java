@@ -4,14 +4,14 @@ import com.example.books.domain.member.Member;
 import com.example.books.domain.member.MemberRepository;
 import com.example.books.exception.AlreadyExistsEmailException;
 import com.example.books.exception.MemberNotFoundException;
-import com.example.books.usecase.dto.LoginUser;
-import com.example.books.usecase.dto.MemberUpdateRequest;
-import com.example.books.usecase.dto.MemberCreateRequest;
-import com.example.books.usecase.dto.MemberResponse;
+import com.example.books.usecase.auth.dto.LoginUser;
+import com.example.books.usecase.member.dto.MemberUpdateRequest;
+import com.example.books.usecase.member.dto.MemberCreateRequest;
+import com.example.books.usecase.member.dto.MemberResponse;
+import com.example.books.usecase.member.MemberUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,14 +27,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class MemberServiceTest {
+class MemberUsecaseTest {
 
     @Mock
     private MemberRepository repository;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    private MemberService service;
+    private MemberUsecase service;
 
     private Member member = Member.of("test@email.com", "1111", "testUser", "010-9999-2222");
 
@@ -42,7 +42,7 @@ class MemberServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new MemberService(repository, passwordEncoder);
+        service = new MemberUsecase(repository, passwordEncoder);
     }
 
     @Test
