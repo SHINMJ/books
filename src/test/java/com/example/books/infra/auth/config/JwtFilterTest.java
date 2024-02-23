@@ -39,7 +39,7 @@ class JwtFilterTest {
 
         jwtFilter.doFilterInternal(request, response, filterChain);
 
-        verifyNoMoreInteractions(filterChain);
+        verify(filterChain).doFilter(request, response);
 
     }
 
