@@ -1,4 +1,4 @@
-package com.example.books.usecase.dto;
+package com.example.books.usecase.member.dto;
 
 import com.example.books.domain.member.Member;
 import com.example.books.ui.validate.Password;

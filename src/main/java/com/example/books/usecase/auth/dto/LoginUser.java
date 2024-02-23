@@ -1,4 +1,4 @@
-package com.example.books.usecase.dto;
+package com.example.books.usecase.auth.dto;
 
 public interface LoginUser {
     Long getId();
