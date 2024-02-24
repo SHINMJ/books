@@ -53,7 +53,7 @@ public class MemberUsecase {
         return MemberResponse.of(saved);
     }
 
-    private Member findById(Long id){
+    public Member findById(Long id){
         return repository.findById(id)
                 .orElseThrow(MemberNotFoundException::new);
     }
