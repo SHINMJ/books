@@ -12,6 +12,7 @@ import com.example.books.usecase.member.MemberUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +54,13 @@ public class BookUsecase {
                 .map(Book::borrowed)
                 .toList();
 
-        repository.saveAll(borrowedBooks);
+        List<Book> saved = repository.saveAll(borrowedBooks);
+
+        /**
+         * @Todo
+         * 이벤트로 처리
+         */
+        memberUsecase.addBorrowed(loginUser, saved);
 
         // 10초 뒤 반납 처리
         scheduler.schedule(() -> {
@@ -70,4 +77,12 @@ public class BookUsecase {
 
         repository.saveAll(returnedBooks);
     }
+
+    @Transactional(readOnly = true)
+    public Page<BookResponse> myBookList(Pageable pageable, LoginUser loginUser) {
+        Member owner = memberUsecase.findById(loginUser.getId());
+        Page<Book> books = repository.findAllByOwner(owner, pageable);
+        return books.map(BookResponse::of);
+    }
+
 }

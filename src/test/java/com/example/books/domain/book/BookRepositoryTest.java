@@ -120,4 +120,25 @@ class BookRepositoryTest {
         assertEquals(page.getTotalElements(), 2);
         assertEquals(page.getContent().get(0), book2);
     }
+
+    @Test
+    void findAllByOwner_최근등록순() {
+        Book book1 = Book.create("첫 1년 움직임의 비밀", "9791186202753", BigDecimal.valueOf(2_000), owner);
+        Book book2 = Book.create("첫 1년 움직임의 비밀", "9791186202753", BigDecimal.valueOf(1_000), owner);
+
+        repository.saveAll(List.of(book1, book2));
+
+        repository.flush();
+
+        Pageable pageable = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
+
+        Page<Book> page = repository.findAllByOwner(owner, pageable);
+
+        assertEquals(page.getTotalElements(), 2);
+        assertEquals(page.getContent().get(0), book2);
+
+        Page<Book> allByBorrower = repository.findAllByOwner(borrower, pageable);
+
+        assertEquals(allByBorrower.getTotalElements(), 0);
+    }
 }
