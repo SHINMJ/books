@@ -19,7 +19,8 @@ import java.util.Arrays;
 @Slf4j
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
-    private static final String[] PERMIT_PATTERNS = {"/auth/signup", "/auth/login"};
+    private static final String[] PERMIT_PATTERNS = {"/auth/signup", "/auth/login",
+            "/v3/api-docs", "/swagger-ui"};
     private static final String AUTHORIZATION_HEADER = "Authorization";
     private static final String BEARER_PREFIX = "Bearer ";
 
@@ -27,7 +28,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (Arrays.stream(PERMIT_PATTERNS).anyMatch(pattern -> request.getServletPath().contains(pattern))){
+        if (Arrays.stream(PERMIT_PATTERNS).anyMatch(pattern ->
+                request.getServletPath().contains(pattern) || request.getServletPath().startsWith(pattern))){
             filterChain.doFilter(request, response);
             return;
         }
