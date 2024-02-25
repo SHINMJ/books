@@ -27,7 +27,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    private static final String[] PERMIT_PATTERNS = {"/auth/signup", "/auth/login"};
+    private static final String[] PERMIT_PATTERNS = {"/auth/signup", "/auth/login",
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**"};
 
     @Value("${jwt.token-secret}")
     private String tokenSecret;
