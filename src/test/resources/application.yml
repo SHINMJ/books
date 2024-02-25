@@ -1,0 +1,25 @@
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+    username: sa
+    initialization-mode: always
+  jpa:
+    hibernate:
+      database-platform: org.hibernate.dialect.MySQL5Dialect
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+
+jwt:
+  token-secret: YXZhdGFydHJpcGF1dGhvcml6YXRpb25qd3RtYW5hZ2VzZWNyZXRrZXkK
+  expired-in: 600000 # 10 min
