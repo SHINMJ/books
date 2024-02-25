@@ -31,6 +31,7 @@
 jdk 17, gradle 8, docker, docker-compose 가 설치된 환경에서 실행하세요.
 
 - 해당 repo를 클론합니다.
+- `database/data` 폴더를 생성합니다.
 - gradle 빌드를 합니다. `./gradlew build`
 - docker-compose 를 통해 배포합니다. `docker-compose up -d --build`
 
