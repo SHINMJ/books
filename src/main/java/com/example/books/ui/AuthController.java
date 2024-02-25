@@ -1,6 +1,7 @@
 package com.example.books.ui;
 
 import com.example.books.exception.dto.ErrorResponse;
+import com.example.books.infra.swagger.annotation.SwaggerApiBadRequestError;
 import com.example.books.usecase.auth.AuthUsecase;
 import com.example.books.usecase.member.MemberUsecase;
 import com.example.books.usecase.auth.dto.LoginRequest;
@@ -30,10 +31,9 @@ public class AuthController {
     private final AuthUsecase service;
 
     @Operation(summary = "회원가입", description = "사용자 정보를 통해 회원가입을 합니다.", responses = {
-            @ApiResponse(responseCode = "201", description = "회원가입 성공"),
-            @ApiResponse(responseCode = "400", description = "잘못된 입력 정보",
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+            @ApiResponse(responseCode = "201", description = "회원가입 성공")
     })
+    @SwaggerApiBadRequestError
     @PostMapping("/auth/signup")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity signup(@Valid @RequestBody MemberCreateRequest request){

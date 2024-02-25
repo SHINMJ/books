@@ -3,11 +3,10 @@ package com.example.books.usecase.book;
 import com.example.books.domain.book.Book;
 import com.example.books.domain.book.BookRepository;
 import com.example.books.domain.member.Member;
+import com.example.books.exception.BizException;
+import com.example.books.exception.MemberNotFoundException;
 import com.example.books.usecase.auth.dto.LoginUser;
-import com.example.books.usecase.book.dto.BookResponse;
-import com.example.books.usecase.book.dto.BorrowedRequest;
-import com.example.books.usecase.book.dto.ConsignmentRequest;
-import com.example.books.usecase.book.dto.ReturnedRequest;
+import com.example.books.usecase.book.dto.*;
 import com.example.books.usecase.member.MemberUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,9 +41,9 @@ public class BookUsecase {
     }
 
     @Transactional(readOnly = true)
-    public Page<BookResponse> findPageAllBy(Pageable pageable) {
+    public BookResponsePage findPageAllBy(Pageable pageable) {
         Page<Book> books = repository.findAllBy(pageable);
-        return books.map(BookResponse::of);
+        return new BookResponsePage(books.map(BookResponse::of).toList(), pageable, books.getTotalElements());
     }
 
     public void borrowed(BorrowedRequest request, LoginUser loginUser){
@@ -79,10 +78,15 @@ public class BookUsecase {
     }
 
     @Transactional(readOnly = true)
-    public Page<BookResponse> myBookList(Pageable pageable, LoginUser loginUser) {
+    public BookResponsePage myBookList(Pageable pageable, LoginUser loginUser) {
         Member owner = memberUsecase.findById(loginUser.getId());
         Page<Book> books = repository.findAllByOwner(owner, pageable);
-        return books.map(BookResponse::of);
+        return new BookResponsePage(books.map(BookResponse::of).toList(), pageable, books.getTotalElements());
     }
 
+    public BookResponse findResponseById(Long id) {
+        Book book = repository.findById(id)
+                .orElseThrow(() -> new BizException("해당 도서를 찾을 수 없습니다."));
+        return BookResponse.of(book);
+    }
 }

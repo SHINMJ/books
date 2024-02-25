@@ -36,6 +36,19 @@ public class BookIntegrationTest extends IntegrationTest{
                 CONSIGNMENTS(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
 
         assertEquals(response.statusCode(), HttpStatus.CREATED.value());
+
+        String id = response.header("Location").replace("/books/", "");
+
+        // 조회
+        ExtractableResponse<Response> idResponse = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2(token)
+                .when()
+                .get(END_POINT + "/" + id)
+                .then().log().all()
+                .extract();
+
+        assertEquals(idResponse.statusCode(), HttpStatus.OK.value());
     }
 
     @Test
