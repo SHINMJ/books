@@ -1,7 +1,7 @@
-package com.example.books.domain.book;
+package com.example.books.domain.member;
 
+import com.example.books.domain.book.Book;
 import com.example.books.domain.common.BaseEntity;
-import com.example.books.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,17 +18,22 @@ public class Borrowed extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "book_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "borrowed_book_fk"))
     private Book book;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member member;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "borrower_id", foreignKey = @ForeignKey(name = "borrowed_member_fk"))
+    private Member borrower;
 
-    public Borrowed(Book book, Member member) {
+    private Borrowed(Book book, Member member) {
         this.book = book;
-        this.member = member;
+        this.borrower = member;
+        member.addBorrowedBooks(this);
+    }
+
+    public static Borrowed of(Book book, Member member){
+        return new Borrowed(book, member);
     }
 
     @Override
@@ -43,4 +48,5 @@ public class Borrowed extends BaseEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,11 +28,15 @@ public class Member {
     @Column(nullable = false)
     private String phone;
 
+    @OneToMany(mappedBy = "borrower", cascade = CascadeType.ALL)
+    private List<Borrowed> borrowedList;
+
     private Member(String email, String password, String name, String phone){
         this.email = email;
         this.password = password;
         this.name = name;
         this.phone = phone;
+        this.borrowedList = new ArrayList<>();
     }
 
     public static Member of(String email, String password, String name, String phone){
@@ -50,6 +56,10 @@ public class Member {
         this.name = info.name;
         this.phone = info.phone;
         return this;
+    }
+
+    public void addBorrowedBooks(Borrowed borrowed){
+        this.borrowedList.add(borrowed);
     }
 
     @Override

@@ -93,4 +93,19 @@ class BookUsecaseTest {
                     assertFalse(book.isBorrowed());
                 });
     }
+
+    @Test
+    void myBookList() {
+        Book book = Book.create("첫 1년 움직임의 비밀", "9791186202753", BigDecimal.valueOf(1_000), owner);
+        Pageable pageable = PageRequest.of(0, 20, Sort.by(Sort.Direction.DESC, "numberOfBorrowed"));
+
+        when(memberUsecase.findById(anyLong()))
+                .thenReturn(owner);
+        when(bookRepository.findAllByOwner(any(), any()))
+                .thenReturn(new PageImpl<>(List.of(book), pageable, 1));
+
+        Page<BookResponse> responses = bookUsecase.myBookList(pageable, loginUser);
+
+        assertEquals(responses.getTotalElements(), 1);
+    }
 }

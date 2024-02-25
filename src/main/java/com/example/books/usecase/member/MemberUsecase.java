@@ -1,10 +1,13 @@
 package com.example.books.usecase.member;
 
+import com.example.books.domain.book.Book;
+import com.example.books.domain.member.Borrowed;
 import com.example.books.domain.member.Member;
 import com.example.books.domain.member.MemberRepository;
 import com.example.books.exception.AlreadyExistsEmailException;
 import com.example.books.exception.MemberNotFoundException;
 import com.example.books.usecase.auth.dto.LoginUser;
+import com.example.books.usecase.book.dto.BookResponse;
 import com.example.books.usecase.member.dto.MemberUpdateRequest;
 import com.example.books.usecase.member.dto.MemberCreateRequest;
 import com.example.books.usecase.member.dto.MemberResponse;
@@ -13,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -58,4 +62,20 @@ public class MemberUsecase {
                 .orElseThrow(MemberNotFoundException::new);
     }
 
+    public void addBorrowed(LoginUser loginUser, List<Book> books) {
+        Member member = findById(loginUser.getId());
+
+        List<Borrowed> borroweds = books.stream()
+                .map(book -> Borrowed.of(book, member))
+                .toList();
+        repository.save(member);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookResponse> myBorrowedBookList(LoginUser loginUser) {
+        Member member = findById(loginUser.getId());
+        return member.getBorrowedList().stream()
+                .map(borrowed -> BookResponse.of(borrowed.getBook()))
+                .toList();
+    }
 }

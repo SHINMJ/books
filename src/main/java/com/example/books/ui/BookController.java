@@ -20,9 +20,9 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RestController
 public class BookController {
+    private static final Integer DEFAULT_SIZE = 20;
 
     private final BookUsecase service;
-    private static final Integer DEFAULT_SIZE = 20;
 
     @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)

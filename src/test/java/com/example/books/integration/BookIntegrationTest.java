@@ -33,7 +33,7 @@ public class BookIntegrationTest extends IntegrationTest{
     void consignment_success() {
         String token = signupAndLoggedIn("test@email.com", "test111", "testUser", "01099912222");
         ExtractableResponse<Response> response =
-                consignments(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
+                CONSIGNMENTS(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
 
         assertEquals(response.statusCode(), HttpStatus.CREATED.value());
     }
@@ -44,7 +44,7 @@ public class BookIntegrationTest extends IntegrationTest{
 
         String request = "{ \"isbn\":\" \", \"price\":-100}";
 
-        ExtractableResponse<Response> response = consignments(token, request);
+        ExtractableResponse<Response> response = CONSIGNMENTS(token, request);
 
         assertEquals(response.statusCode(), HttpStatus.BAD_REQUEST.value());
 
@@ -59,12 +59,12 @@ public class BookIntegrationTest extends IntegrationTest{
     void getList_orderLowerPrice_success() {
         String token = signupAndLoggedIn("test@email.com", "test111", "testUser", "01099912222");
 
-        consignments(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
-        consignments(token, "{\"title\": \"세이노의 가르침\", \"isbn\":\"9791168473690\", \"price\":3000}");
-        consignments(token, "{\"title\": \"Clean Code(클린 코드)\", \"isbn\":\"9788966260959\", \"price\":2000}");
-        consignments(token, "{\"title\": \"클린 아키텍처: 소프트웨어 구조와 설계의 원칙\", \"isbn\":\"9788966262472\", \"price\":2000}");
+        CONSIGNMENTS(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
+        CONSIGNMENTS(token, "{\"title\": \"세이노의 가르침\", \"isbn\":\"9791168473690\", \"price\":3000}");
+        CONSIGNMENTS(token, "{\"title\": \"Clean Code(클린 코드)\", \"isbn\":\"9788966260959\", \"price\":2000}");
+        CONSIGNMENTS(token, "{\"title\": \"클린 아키텍처: 소프트웨어 구조와 설계의 원칙\", \"isbn\":\"9788966262472\", \"price\":2000}");
 
-        ExtractableResponse<Response> response = getList(token, "price", "ASC");
+        ExtractableResponse<Response> response = GET_LIST(token, "price", "ASC");
 
         assertEquals(response.statusCode(), HttpStatus.OK.value());
         List<BookResponse> content = response.body().jsonPath().getList("content", BookResponse.class);
@@ -80,12 +80,12 @@ public class BookIntegrationTest extends IntegrationTest{
     void getList_orderRecent_success() {
         String token = signupAndLoggedIn("test@email.com", "test111", "testUser", "01099912222");
 
-        consignments(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
-        consignments(token, "{\"title\": \"세이노의 가르침\", \"isbn\":\"9791168473690\", \"price\":3000}");
-        consignments(token, "{\"title\": \"Clean Code(클린 코드)\", \"isbn\":\"9788966260959\", \"price\":2000}");
-        consignments(token, "{\"title\": \"클린 아키텍처: 소프트웨어 구조와 설계의 원칙\", \"isbn\":\"9788966262472\", \"price\":2000}");
+        CONSIGNMENTS(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
+        CONSIGNMENTS(token, "{\"title\": \"세이노의 가르침\", \"isbn\":\"9791168473690\", \"price\":3000}");
+        CONSIGNMENTS(token, "{\"title\": \"Clean Code(클린 코드)\", \"isbn\":\"9788966260959\", \"price\":2000}");
+        CONSIGNMENTS(token, "{\"title\": \"클린 아키텍처: 소프트웨어 구조와 설계의 원칙\", \"isbn\":\"9788966262472\", \"price\":2000}");
 
-        ExtractableResponse<Response> response = getList(token, "createdDate", "DESC");
+        ExtractableResponse<Response> response = GET_LIST(token, "createdDate", "DESC");
 
         assertEquals(response.statusCode(), HttpStatus.OK.value());
         List<BookResponse> content = response.body().jsonPath().getList("content", BookResponse.class);
@@ -102,14 +102,14 @@ public class BookIntegrationTest extends IntegrationTest{
         //given
         String token = signupAndLoggedIn("test@email.com", "test111", "testUser", "01099912222");
 
-        consignments(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
-        consignments(token, "{\"title\": \"세이노의 가르침\", \"isbn\":\"9791168473690\", \"price\":3000}");
-        consignments(token, "{\"title\": \"Clean Code(클린 코드)\", \"isbn\":\"9788966260959\", \"price\":2000}");
-        consignments(token, "{\"title\": \"클린 아키텍처: 소프트웨어 구조와 설계의 원칙\", \"isbn\":\"9788966262472\", \"price\":2000}");
+        CONSIGNMENTS(token, "{\"title\": \"첫 1년 움직임의 비밀\", \"isbn\":\"9791186202753\", \"price\":1000}");
+        CONSIGNMENTS(token, "{\"title\": \"세이노의 가르침\", \"isbn\":\"9791168473690\", \"price\":3000}");
+        CONSIGNMENTS(token, "{\"title\": \"Clean Code(클린 코드)\", \"isbn\":\"9788966260959\", \"price\":2000}");
+        CONSIGNMENTS(token, "{\"title\": \"클린 아키텍처: 소프트웨어 구조와 설계의 원칙\", \"isbn\":\"9788966262472\", \"price\":2000}");
 
         String borrowed = signupAndLoggedIn("borrowed@email.com", "test111", "borrowedUser", "01099912222");
 
-        ExtractableResponse<Response> getList = getList(borrowed, "createdDate", "DESC");
+        ExtractableResponse<Response> getList = GET_LIST(borrowed, "createdDate", "DESC");
 
         List<BookResponse> content = getList.body().jsonPath().getList("content", BookResponse.class);
 
@@ -123,18 +123,11 @@ public class BookIntegrationTest extends IntegrationTest{
         assertEquals(ids.size(), 2);
 
         //when
-        ExtractableResponse<Response> response = RestAssured.given().log().all()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .auth().oauth2(borrowed)
-                .body("{\"ids\": "+ids+"}")
-                .when()
-                .post(END_POINT + "/rent")
-                .then().log().all()
-                .extract();
+        ExtractableResponse<Response> response = BORROWED(borrowed, ids);
 
         assertEquals(response.statusCode(), HttpStatus.CREATED.value());
 
-        getList = getList(borrowed, "createdDate", "DESC");
+        getList = GET_LIST(borrowed, "createdDate", "DESC");
 
         content = getList.body().jsonPath().getList("content", BookResponse.class);
         assertThat(content).filteredOn(BookResponse::isBorrowed)
@@ -145,7 +138,7 @@ public class BookIntegrationTest extends IntegrationTest{
         await()
                 .atMost(Duration.ofSeconds(11L))
                 .untilAsserted(() -> {
-                    ExtractableResponse<Response> list = getList(borrowed, "numberOfBorrowed", "DESC");
+                    ExtractableResponse<Response> list = GET_LIST(borrowed, "numberOfBorrowed", "DESC");
                     List<BookResponse> bookResponses = list.body().jsonPath().getList("content", BookResponse.class);
 
                     assertThat(bookResponses).filteredOn(BookResponse::isBorrowed)
@@ -168,7 +161,7 @@ public class BookIntegrationTest extends IntegrationTest{
                 "}");
     }
 
-    private ExtractableResponse<Response> consignments(String token, String body){
+    static ExtractableResponse<Response> CONSIGNMENTS(String token, String body){
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().oauth2(token)
@@ -179,7 +172,7 @@ public class BookIntegrationTest extends IntegrationTest{
                 .extract();
     }
 
-    private ExtractableResponse<Response> getList(String token, String order, String direction){
+    static ExtractableResponse<Response> GET_LIST(String token, String order, String direction){
         return RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .auth().oauth2(token)
@@ -188,6 +181,17 @@ public class BookIntegrationTest extends IntegrationTest{
                 .queryParam("page", 0)
                 .when()
                 .get(END_POINT)
+                .then().log().all()
+                .extract();
+    }
+
+    static ExtractableResponse<Response> BORROWED(String token, List<Long> ids){
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .auth().oauth2(token)
+                .body("{\"ids\": "+ids+"}")
+                .when()
+                .post(END_POINT + "/rent")
                 .then().log().all()
                 .extract();
     }
